@@ -9,14 +9,14 @@ declare module "next-auth" {
     mobile?: string;
   }
 
-  // 🧠 Extend the session to include your custom fields
-  interface Session {
-    user: {
-      id: string;
-      role?: string;
-      mobile?: string;
-    } & DefaultSession["user"];
-  }
+//   // 🧠 Extend the session to include your custom fields
+//   interface Session {
+//     user: {
+//       id: string;
+//       role?: string;
+//       mobile?: string;
+//     } & DefaultSession["user"];
+//   }
 }
 
 // declare module "next-auth/jwt" {
