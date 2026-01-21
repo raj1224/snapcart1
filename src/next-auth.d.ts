@@ -19,11 +19,11 @@ declare module "next-auth" {
   }
 }
 
-declare module "next-auth/jwt" {
-  // 💾 Extend the JWT token type
-  interface JWT extends DefaultJWT {
-    id: string;
-    role?: string;
-    mobile?: string;
-  }
-}
+// declare module "next-auth/jwt" {
+//   // 💾 Extend the JWT token type
+//   interface JWT extends DefaultJWT {
+//     id: string;
+//     role?: string;
+//     mobile?: string;
+//   }
+// }
