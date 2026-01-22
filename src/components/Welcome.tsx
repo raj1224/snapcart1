@@ -18,6 +18,7 @@ const Welcome = ({nextStep}:propType) => {
             transition={{ duration: 0.6 }}
             className="flex items-center gap-3"
           >
+            {/* hello */}
             <ShoppingBasket className="w-10 h-10 text-green-600" />
             <h1 className="text-4xl md:text-5xl font-extrabold text-green-700">
               SnapCart
@@ -41,20 +42,16 @@ const Welcome = ({nextStep}:propType) => {
             <ShoppingBasket className="w-24 h-24 md:w-32 md:h-32 text-green-600 drop-shadow-md" />
             <Bike className="w-24 h-24 md:w-32 md:h-32 text-orange-500 drop-shadow-md" />
           </motion.div>
-        <motion.div
+        <motion.button
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}
-            className="mt-12"
+            className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-2xl shadow-md duration-200 transition-all mt-10"
+            onClick={()=>nextStep(2)}
           >
-            <button
-              onClick={() => nextStep(2)}
-              className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-2xl shadow-md transition-all duration-200"
-            >
-              Next
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </motion.div>  
+            Next
+            <ArrowRight/>
+          </motion.button>  
     </div>
   )
 }

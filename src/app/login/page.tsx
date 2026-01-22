@@ -7,48 +7,40 @@ import {motion} from 'motion/react';
 import Image from 'next/image';
 
 import googleImage from "@/assets/google.svg";
-import { useRouter } from 'next/navigation';
+
 import axios from 'axios';
 import { s } from 'motion/react-client';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import { set } from 'mongoose';
+import { log } from 'console';
 
-type propType={
-  previousStep:(s:number)=>void
-}
 
-const RegisterForm = ({previousStep}:propType) => {
+const Login = () => {
 
-  const router = useRouter();
-
-  const [name,setName]=useState("")
   const [email,setEmail]=useState("")
   const [password,setPassword]=useState("")
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false); // ✅ Loading state
+  const router = useRouter();
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleLogin=async(e:React.FormEvent)=>{
     e.preventDefault();
-    setLoading(true); // ✅ Set loading to true when starting registration
+    setLoading(true); // ✅ Set loading to true when starting login
     try {
-      const result = await axios.post('/api/auth/register',{
-         name,
-         email,
-         password
-      })
-      console.log(result.data);
-      setLoading(false); // ✅ Set loading to false after registration completes
+        await signIn('credentials',{
+            email,password
+        })
+        setLoading(false); // ✅ Set loading to false after login attempt
     } catch (error) {
-      console.log(error);
-      setLoading(false); // ✅ Set loading to false if there's an error
+        console.error("Login failed:", error);
+        setLoading(false); // ✅ Set loading to false if there's an error
     }
-  };
+    
+  }
+
   return (
     <div className='flex flex-col items-center justify-center min-h-screen px-6 py-10 bg-white relative'>
-      <div className='absolute top-6 left-6 flex items-center gap-2 text-green-700 hover:text-green-800 transition-colors cursor-pointer'
-      onClick={()=>previousStep(1)}
-      >
-        <ArrowLeft className='w-5 h-5'/>
-        <span className='font-medium'>Back</span>
-      </div>
 
        <motion.h1
             initial={{ opacity: 0, y: -10 }}
@@ -56,28 +48,18 @@ const RegisterForm = ({previousStep}:propType) => {
             transition={{ duration: 0.5 }}
             className="text-4xl font-extrabold text-green-700 mb-2"
           >
-            Create Account
+            Welcome Back
        </motion.h1>
-          <p className="text-gray-600 mb-8 flex items-center">Join SnapCart today <Leaf className='w-5 h-5 text-green-600'/></p>
+          <p className="text-gray-600 mb-8 flex items-center">Login to SnapCart <Leaf className='w-5 h-5 text-green-600'/></p>
 
           <motion.form
+            onSubmit={handleLogin}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            onSubmit={handleRegister}
             className="flex flex-col gap-5 w-full max-w-sm"
           >
-            {/* Name */}
-            <div className="relative">
-              <User className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full border border-gray-300 rounded-xl py-3 pl-10 pr-4 text-gray-800 focus:ring-2 focus:ring-green-500 focus:outline-none"
-              />
-            </div>
+           
 
             {/* Email */}
             <div className="relative">
@@ -117,7 +99,7 @@ const RegisterForm = ({previousStep}:propType) => {
             {/* ✅ Register Button with Spinner */}
             {(() => {
               const isFormValid =
-               name.trim() !== "" &&
+
                email.trim() !== "" &&
                password.trim() !== "";
 
@@ -137,7 +119,7 @@ const RegisterForm = ({previousStep}:propType) => {
                       Loading...
                     </>
                   ) : (
-                    "Register"
+                    "Login"
                   )}
                 </button>
               );
@@ -164,17 +146,14 @@ const RegisterForm = ({previousStep}:propType) => {
 
            {/* Sign In Link */}
           <p className="text-gray-600 cursor-pointer mt-6 text-sm flex items-center gap-1"
-          onClick={()=>router.push('/login')}
+          onClick={()=>router.push('/register')}
           >
-            Already have an account?
-            {/* <Link
-              href="/login"
-              className="text-green-700 font-semibold hover:underline flex items-center gap-1"
-            > */}
-              <LogIn className="w-4 h-4" /> 
-              <span className='text-green-600'>Sign in</span>
+            Want to Create an account?
 
-            {/* </Link> */}
+              <LogIn className="w-4 h-4" /> 
+              <span className='text-green-600'>Sign Up</span>
+
+
           </p>
 
       
@@ -182,4 +161,4 @@ const RegisterForm = ({previousStep}:propType) => {
   )
 }
 
-export default RegisterForm
+export default Login
