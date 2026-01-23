@@ -52,29 +52,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // Callbacks
   // -----------------------------
   callbacks: {
-    // // 1️⃣ Ensure Google users have a role
-    // async signIn({ account, user }) {
-    //   if (account?.provider === "google") {
-    //     await connectDb();
-    //     let dbUser = await User.findOne({ email: user.email });
+    // 1️⃣ Ensure Google users have a role
+    async signIn({ account, user }) {
+      if (account?.provider === "google") { // ? ye kyu use kiya yha? 
+        await connectDb();
+        let dbUser = await User.findOne({ email: user.email });
 
-    //     if (!dbUser) {
-    //       // Create new user with default role
-    //       dbUser = await User.create({
-    //         name: user.name,
-    //         email: user.email,
-    //         image: user.image,
-    //         role:user?.role || "user", // ✅ default role
-    //       });
-    //     }
+        if (!dbUser) {
+          // Create new user with default role
+          dbUser = await User.create({
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            role:user?.role || "user", // ✅ default role
+          });
+        }
 
-    //     // Inject DB info into NextAuth's user object
-    //     user.id = dbUser._id.toString();
-    //     user.role = dbUser.role; // ✅ attach role manually
-    //   }
+        // Inject DB info into NextAuth's user object
+        user.id = dbUser._id.toString();
+        user.role = dbUser.role; // ✅ attach role manually
+      }
 
-    //   return true;
-    // },
+      return true;
+    },
 
     // 2️⃣ Store everything into JWT
     // token me user ka data dalta h. session me token ka data dalta h.

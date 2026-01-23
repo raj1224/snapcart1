@@ -9,11 +9,9 @@ import Image from 'next/image';
 import googleImage from "@/assets/google.svg";
 
 import axios from 'axios';
-import { s } from 'motion/react-client';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
-import { set } from 'mongoose';
-import { log } from 'console';
+import { signIn, useSession } from 'next-auth/react';
+
 
 
 const Login = () => {
@@ -23,6 +21,9 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false); // ✅ Loading state
   const router = useRouter();
+  const session = useSession();
+
+  console.log("Session:", session);
 
   const handleLogin=async(e:React.FormEvent)=>{
     e.preventDefault();
@@ -137,6 +138,7 @@ const Login = () => {
               type="button"
               className="w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200"
               // onClick={handleGoogleLogin}
+              onClick={()=>signIn("google")}
             >
               <Image src={googleImage} alt="Google logo" className="w-5 h-5" />
               Continue with Google
