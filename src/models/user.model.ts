@@ -25,8 +25,7 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     mobile: {
   type: String,
-  unique: true,
-  sparse: true   // 🔥 THIS IS THE KEY
+     // 🔥 THIS IS THE KEY
 },
 
     role: {
